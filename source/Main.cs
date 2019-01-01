@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using Wox.Infrastructure;
 
 namespace Wox.Plugin.BrowserBookmark
 {
@@ -40,8 +40,8 @@ namespace Wox.Plugin.BrowserBookmark
             if (!topResults)
             {
                 // Since we mixed chrome and firefox bookmarks, we should order them again
-                var fuzzyMatcher = FuzzyMatcher.Create(param);
-                returnList = cachedBookmarks.Where(o => MatchProgram(o, fuzzyMatcher)).ToList();
+                //var fuzzyMatcher = FuzzyMatcher.Create(param);
+                returnList = cachedBookmarks.Where(o => MatchProgram(o, param)).ToList();
                 returnList = returnList.OrderByDescending(o => o.Score).ToList();
             }
             
@@ -60,13 +60,62 @@ namespace Wox.Plugin.BrowserBookmark
             }).ToList();
         }
 
-        private bool MatchProgram(Bookmark bookmark, FuzzyMatcher matcher)
+        public static int CalcLevenshteinDistance(string a, string b)
         {
-            if ((bookmark.Score = matcher.Evaluate(bookmark.Name).Score) > 0) return true;
-            if ((bookmark.Score = matcher.Evaluate(bookmark.PinyinName).Score) > 0) return true;
-            if ((bookmark.Score = matcher.Evaluate(bookmark.Url).Score / 10) > 0) return true;
+            if (string.IsNullOrEmpty(a) && string.IsNullOrEmpty(b))
+            {
+                return 0;
+            }
+            if (string.IsNullOrEmpty(a))
+            {
+                return b.Length;
+            }
+            if (string.IsNullOrEmpty(b))
+            {
+                return a.Length;
+            }
+            int lengthA = a.Length;
+            int lengthB = b.Length;
+            var distances = new int[lengthA + 1, lengthB + 1];
+            for (int i = 0; i <= lengthA; distances[i, 0] = i++) ;
+            for (int j = 0; j <= lengthB; distances[0, j] = j++) ;
 
-            return false;
+            for (int i = 1; i <= lengthA; i++)
+                for (int j = 1; j <= lengthB; j++)
+                {
+                    int cost = b[j - 1] == a[i - 1] ? 0 : 1;
+                    distances[i, j] = Math.Min
+                        (
+                        Math.Min(distances[i - 1, j] + 1, distances[i, j - 1] + 1),
+                        distances[i - 1, j - 1] + cost
+                        );
+                }
+            return distances[lengthA, lengthB];
+        }
+
+        //will return the number of fuzzy matched words
+        public static int FuzzyWordsMatchingCount(string a, string b)
+        {
+            int matchedWordsCount = 0;
+            foreach (string wordi in a.Split(' '))
+            {
+                foreach (string wordj in b.Split(' '))
+                {
+                    int minLength = Math.Min(wordi.Length, wordj.Length);
+                    int distance = CalcLevenshteinDistance(wordi.ToLower().Substring(0, minLength), wordj.ToLower().Substring(0, minLength));
+                    if (distance < Math.Max(minLength / 2, 1))
+                        matchedWordsCount++;
+                }
+            }
+
+            return matchedWordsCount;
+        }
+
+        private bool MatchProgram(Bookmark bookmark, string param)
+        {
+            bookmark.Score = FuzzyWordsMatchingCount(bookmark.Name, param);
+
+            return (bookmark.Score > 0);
         }
     }
 }

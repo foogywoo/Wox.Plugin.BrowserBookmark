@@ -120,3 +120,7 @@ Wox/Images/Thumbs.db
 Wox/Wox.csproj
 
 *.sublime-*
+
+source/\.vs/
+
+source/packages/

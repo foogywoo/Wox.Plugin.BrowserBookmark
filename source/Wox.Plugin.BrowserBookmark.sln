@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.168
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wox.Plugin.BrowserBookmark", "Wox.Plugin.BrowserBookmark.csproj", "{9B130CC5-14FB-41FF-B310-0A95B6894C37}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wox.Plugin.BrowserBookmarkTests", "..\Wox.Plugin.BrowserBookmarkTests\Wox.Plugin.BrowserBookmarkTests.csproj", "{0058BA5D-D169-4107-8663-7ADB5059130B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9B130CC5-14FB-41FF-B310-0A95B6894C37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B130CC5-14FB-41FF-B310-0A95B6894C37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B130CC5-14FB-41FF-B310-0A95B6894C37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B130CC5-14FB-41FF-B310-0A95B6894C37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0058BA5D-D169-4107-8663-7ADB5059130B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0058BA5D-D169-4107-8663-7ADB5059130B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0058BA5D-D169-4107-8663-7ADB5059130B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0058BA5D-D169-4107-8663-7ADB5059130B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {67D4AD0D-47FB-4949-AB10-83B5F851078C}
+	EndGlobalSection
+EndGlobal
